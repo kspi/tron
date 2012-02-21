@@ -30,18 +30,21 @@ def apply_direction(position, d):
 
 
 class Player(object):
-    def __init__(self, num, ai):
+    def __init__(self):
         self.alive = True
         self.survived = 0
+        self.action = GO_FORWARD
+
+    def setup(self, num):
         self.number = num
         self.name = 'Player %d' % num
         self.symbol = str(num)
-        assert(len(self.symbol) == 1)
-        self.ai = __import__('ai.%s' % ai, fromlist=['ai']).Agent()
     
-    def move(self, board, players):
-        action = self.ai.decide(board, players, self.number)
-        self.direction = new_direction(self.direction, action)
+    def decide(self, board, players):
+        pass
+
+    def move(self, board):
+        self.direction = new_direction(self.direction, self.action)
         self.position = apply_direction(self.position, self.direction)
         if board.is_wall(self.position):
             self.alive = False

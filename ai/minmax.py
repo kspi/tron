@@ -28,7 +28,7 @@ def invert_outcome(outcome):
 
 class Agent(object):
     def __init__(self):
-        self.depth = 3
+        self.depth = 7
         self.my_space_importance = 1
         self.opponents_space_importance = 1
 
@@ -85,12 +85,14 @@ class Agent(object):
                     best_action = action
             return (best_action, best_outcome)
         else:
-            temp_board = board.copy()
-            temp_board.remove_wall(me.position)
-            temp_board.remove_wall(opponent.position)
-            my_space = temp_board.fill(me.position)
-            opponents_space = temp_board.fill(opponent.position)
-            if opponents_space == 0:
-                opponents_space == my_space
+            #temp_board = board.copy()
+            #temp_board.remove_wall(me.position)
+            #temp_board.remove_wall(opponent.position)
+            #my_space = temp_board.fill(me.position)
+            #opponents_space = temp_board.fill(opponent.position)
+            #if opponents_space == 0:
+                #opponents_space == my_space
+            my_space = 0
+            opponents_space = 0
             return player.GO_FORWARD, outcome_unknown(my_space, opponents_space)
 

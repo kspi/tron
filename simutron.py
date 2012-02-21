@@ -3,6 +3,7 @@
 import sys
 
 import game
+import ai
 
 if __name__ == '__main__':
     if len(sys.argv) < 2 or '--help' in sys.argv or '-h' in sys.argv:
@@ -11,6 +12,7 @@ if __name__ == '__main__':
     rows = int(sys.argv[1])
     columns = int(sys.argv[2])
     ais = sys.argv[3:]
-    tron = game.Tron((rows, columns), ais)
+    players = [ai.AIPlayer(a) for a in ais]
+    tron = game.Tron((rows, columns), players)
     winner = tron.run()
     print '%s won after %d turns.' % (tron.players[winner].name, tron.turn)

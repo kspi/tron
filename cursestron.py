@@ -17,7 +17,7 @@ class CursesTron(object):
         players = []
 
         self.human = None
-        self.human_delay = 200
+        self.human_delay = 150
         self.last_update = util.milliseconds()
 
         for arg in args:
@@ -71,7 +71,8 @@ class CursesTron(object):
                     self.human.action = player.GO_FORWARD
                     now = util.milliseconds()
                     diff = now - self.last_update 
-                    curses.napms(max(0, 200 - diff))
+                    if diff < self.human_delay:
+                        curses.napms(self.human_delay - diff)
                     self.last_update = util.milliseconds()
 
                 key = stdscr.getch()

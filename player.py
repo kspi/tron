@@ -45,9 +45,10 @@ class Player(object):
 
     def move(self, board):
         self.direction = new_direction(self.direction, self.action)
-        self.position = apply_direction(self.position, self.direction)
-        if board.is_wall(self.position):
+        new_position = apply_direction(self.position, self.direction)
+        if board.is_wall(new_position):
             self.alive = False
-            return
-        board.place_wall(self.position, self.symbol)
-        self.survived += 1
+        else:
+            self.position = new_position
+            board.place_wall(self.position, self.symbol)
+            self.survived += 1

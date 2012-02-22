@@ -1,4 +1,5 @@
 import random
+import time
 
 RANDOM = random.SystemRandom()
 
@@ -20,3 +21,6 @@ def player_name(num):
 
 def list_rotated_left(a, amount=1):
     return a[amount:] + a[0:amount]
+
+def milliseconds():
+    return int(round(time.time() * 1000))

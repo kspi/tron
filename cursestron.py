@@ -1,13 +1,13 @@
 #!/usr/bin/env python2
 
 import sys
-import time
 import curses
 
 import board
 import player
 import game
 import ai
+import util
 
 ROWS = 24
 COLUMNS = 80
@@ -15,7 +15,11 @@ COLUMNS = 80
 class CursesTron(object):
     def __init__(self, args):
         players = []
+
         self.human = None
+        self.human_delay = 200
+        self.last_update = util.milliseconds()
+
         for arg in args:
             if arg == 'human':
                 if self.human:
@@ -62,17 +66,24 @@ class CursesTron(object):
             
             while not self.tron.game_over:
                 self.status = 'Turn %d.' % self.tron.turn
+
                 if self.human:
                     self.human.action = player.GO_FORWARD
-                    curses.napms(200)
-                    try:
-                        k = stdscr.getkey()
-                        if k in [',', 'KEY_LEFT']:
+                    now = util.milliseconds()
+                    diff = now - self.last_update 
+                    curses.napms(max(0, 200 - diff))
+                    self.last_update = util.milliseconds()
+
+                key = stdscr.getch()
+                while key != -1:
+                    if key == ord('q'):
+                        sys.exit(0)
+                    elif self.human:
+                        if key in [ord(','), curses.KEY_LEFT]:
                             self.human.action = player.TURN_LEFT
-                        elif k in ['.', 'KEY_RIGHT']:
+                        elif key in [ord('.'), curses.KEY_RIGHT]:
                             self.human.action = player.TURN_RIGHT
-                    except curses.error:
-                        pass
+                    key = stdscr.getch()
                 self.tron.do_turn()
                 self.draw(stdscr)
 
